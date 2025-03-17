@@ -30,6 +30,8 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",  # Required for WebSockets
+    "channels",
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -39,8 +41,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api'
+    'api',
+    'chat',
 ]
+
+AUTH_USER_MODEL = 'api.Retailer'
+
+# Channel Layer Configuration (Using Redis)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # For development
+        # For production, use Redis:
+        # "BACKEND": "channels_redis.core.RedisChannelLayer",
+        # "CONFIG": {
+        #     "hosts": [("127.0.0.1", 6379)],
+        # },
+    },
+}
+
+# Set the ASGI application
+ASGI_APPLICATION = "floracouture.asgi.application"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

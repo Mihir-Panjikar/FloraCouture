@@ -5,12 +5,14 @@ from .serializers import RetailerRegistrationSerializer
 from django.contrib.auth import get_user_model
 
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
-from rest_framework import status
 from .models import Retailer
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -46,3 +48,14 @@ class RetailerLoginView(APIView):
             except Retailer.DoesNotExist:
                 return Response({"error": "User is not a retailer"}, status=status.HTTP_401_UNAUTHORIZED)
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class RetailerLogoutView(APIView):
+    permission_classes = [IsAuthenticated]  # Requires authentication
+
+    def post(self, request):
+        try:
+            # Delete the user's token to log them out
+            Token.objects.filter(user=request.user).delete()
+            return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
