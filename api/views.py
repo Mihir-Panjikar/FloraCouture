@@ -10,9 +10,7 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from .models import Retailer
 
-from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
