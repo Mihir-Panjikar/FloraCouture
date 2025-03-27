@@ -45,9 +45,13 @@ INSTALLED_APPS = [
     'api',
     'chat',
     'retailers',
+    'products',
+    'customers',
+
 ]
 
-AUTH_USER_MODEL = 'api.Retailer'
+# Choose one model as the primary auth model
+AUTH_USER_MODEL = 'retailers.Retailer'
 
 # Channel Layer Configuration (Using Redis)
 CHANNEL_LAYERS = {
@@ -67,6 +71,9 @@ ASGI_APPLICATION = "floracouture.asgi.application"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 
@@ -164,7 +171,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    # Update with correct path or remove if not needed
 ]
 
 MEDIA_URL = '/media/'

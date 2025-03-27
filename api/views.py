@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
-from .models import Retailer
+from retailers.models import Retailer  # Use the consolidated model
 
 from rest_framework.permissions import IsAuthenticated
 
@@ -25,6 +25,7 @@ class RetailerRegisterView(generics.CreateAPIView):
             serializer.save()
             return Response({"message": "Retailer registered successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class RetailerLoginView(APIView):
     permission_classes = [AllowAny]  # No authentication required for login
@@ -46,6 +47,7 @@ class RetailerLoginView(APIView):
             except Retailer.DoesNotExist:
                 return Response({"error": "User is not a retailer"}, status=status.HTTP_401_UNAUTHORIZED)
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class RetailerLogoutView(APIView):
     permission_classes = [IsAuthenticated]  # Requires authentication

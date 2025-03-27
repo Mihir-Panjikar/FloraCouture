@@ -1,6 +1,6 @@
 from rest_framework import serializers
+from rest_framework.serializers import Serializer, CharField
 from .models import Retailer
-
 
 class RetailerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,3 +14,8 @@ class RetailerSerializer(serializers.ModelSerializer):
         retailer.set_password(password)
         retailer.save()
         return retailer
+
+
+class ChangePasswordSerializer(Serializer):
+    old_password = CharField(required=True)
+    new_password = CharField(required=True)
