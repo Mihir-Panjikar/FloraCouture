@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us | Bloomify</title>
+  <link rel="stylesheet" href="style/contact.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🌸 Floral Couture</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="simple-bouquets.html">Simple Bouquets</a></li>
+        <li><a href="custom-bouquets.html">Custom Bouquets</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="contact">
+    <h2>Contact Us</h2>
+    <p>Got questions or requests? Send us a message!</p>
+
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required />
+      <input type="text" placeholder="Your Contact (Phone or Email)" required />
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <div id="chatbot-placeholder">
+
+  <script src="scripts/contact.js">
+    fetch("chatbot.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("chatbot-placeholder").innerHTML = html;
+      });
+  </script>
+  </div>
+
+</body>
+</html>

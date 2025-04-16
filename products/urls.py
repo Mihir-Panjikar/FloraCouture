@@ -4,7 +4,8 @@ from .views import (
     ListProductsView,
     RetrieveProductView,
     UpdateProductView,
-    DeleteProductView
+    DeleteProductView,
+    custom_bouquets_view  # Adjust import based on your actual view function
 )
 
 urlpatterns = [
@@ -13,4 +14,5 @@ urlpatterns = [
     path("<int:pk>/", RetrieveProductView.as_view(), name="retrieve_product"),
     path("<int:pk>/update/", UpdateProductView.as_view(), name="update_product"),
     path("<int:pk>/delete/", DeleteProductView.as_view(), name="delete_product"),
+    path('custom-bouquets/', custom_bouquets_view, name='custom_bouquets'),
 ]

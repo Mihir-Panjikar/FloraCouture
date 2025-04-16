@@ -1,0 +1,372 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  /* Body Styling */
+  body {
+    background: linear-gradient(to bottom right, #fce4ec, #f3e5f5);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  /* Auth Container */
+  .auth-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Toggle Buttons */
+  .form-toggle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .form-toggle button {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    cursor: pointer;
+    background-color: #f8bbd0;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: background 0.3s;
+    margin: 0 5px;
+  }
+  
+  .form-toggle button.active {
+    background-color: #ec407a;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .auth-form.hidden {
+    display: none;
+  }
+  
+  .auth-form h2 {
+    margin-bottom: 20px;
+    color: #d81b60;
+    text-align: center;
+  }
+  
+  .auth-form input {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s;
+  }
+  
+  .auth-form input:focus {
+    border-color: #ec407a;
+    outline: none;
+  }
+  
+  .auth-form button {
+    padding: 12px;
+    background-color: #ec407a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .auth-form button:hover {
+    background-color: #d81b60;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  /* Responsive */
+  @media (max-width: 500px) {
+    .auth-container {
+      padding: 20px;
+    }
+  
+    .form-toggle button {
+      font-size: 14px;
+    }
+  
+    .auth-form h2 {
+      font-size: 20px;
+    }
+  }
+  
+
+  /* Navbar */
+.navbar {
+    background-color: #f48fb1;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .navbar h1 {
+    font-size: 24px;
+  }
+  
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .navbar ul li a:hover {
+    color: #fffde7;
+  }
+  
+  /* Bouquet Grid */
+  .bouquet-list {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .bouquet-list h2 {
+    text-align: center;
+    color: #d81b60;
+    margin-bottom: 20px;
+  }
+  
+  .bouquet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .bouquet-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  
+  .bouquet-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .bouquet-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  
+  .bouquet-card h3 {
+    color: #ec407a;
+    margin: 10px 0 5px;
+  }
+  
+  .bouquet-card p {
+    margin-bottom: 10px;
+    color: #444;
+  }
+  
+  .bouquet-card button {
+    background-color: #ec407a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .bouquet-card button:hover {
+    background-color: #d81b60;
+  }
+  
+
+  /* Cart Page Styling */
+.cart-section {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.cart-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #d81b60;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cart-card {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 15px 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  align-items: center;
+}
+
+.cart-card h3 {
+  margin-bottom: 5px;
+  color: #ec407a;
+}
+
+.cart-card p {
+  margin: 2px 0;
+}
+
+.cart-card button {
+  background-color: #f06292;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cart-card button:hover {
+  background-color: #d81b60;
+}
+
+.cart-summary {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.cart-summary button {
+  background-color: #ab47bc;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.cart-summary button:hover {
+  background-color: #8e24aa;
+}
+
+/* Thank You Page */
+.thank-you {
+  text-align: center;
+  padding: 80px 20px;
+  color: #d81b60;
+  animation: fadeIn 0.5s ease;
+}
+
+.thank-you h2 {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.thank-you p {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.thank-you a {
+  display: inline-block;
+  background-color: #ec407a;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.thank-you a:hover {
+  background-color: #c2185b;
+}
+
+
+/* Custom Bouquet Page */
+.custom-section {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff0f5;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+.custom-section h2 {
+  text-align: center;
+  color: #c2185b;
+}
+
+.custom-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.custom-section input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+legend {
+  font-weight: bold;
+  color: #d81b60;
+}
+
+.custom-section button {
+  background-color: #d81b60;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.custom-section button:hover {
+  background-color: #ad1457;
+}

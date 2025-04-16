@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart - Floral Couture</title>
+  <link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <h1>🛒 Your Cart</h1>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="simple-bouquets.html">Bouquets</a></li>
+      <li><a href="custom-bouquets.html">Customise</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="cart-section">
+    <h2>Items in Your Cart</h2>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-summary">
+      <p><strong>Total: ₹<span id="totalPrice">0</span></strong></p>
+      <button onclick="placeOrder()">Place Order</button>
+    </div>
+  </section>
+  <div id="chatbot-placeholder">
+
+    <script src="{% static 'scripts/chatbot.js' %}"></script>
+      fetch("chatbot.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("chatbot-placeholder").innerHTML = html;
+        });
+    </script>
+    </div>
+
+  <script src="{% static 'scripts/cart.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Bouquets - Floral Couture</title>
+  <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <h1>💐 Custom Bouquets</h1>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="simple-bouquets.html">Bouquets</a></li>
+      <li><a href="cart.html">Cart</a></li>
+    </ul>
+  </nav>
+
+  <section class="custom-section">
+    <h2>Create Your Own Bouquet</h2>
+    <form id="customForm">
+      <label>Bouquet Name:
+        <input type="text" id="bouquetName" required>
+      </label>
+
+      <label>Message:
+        <input type="text" id="message" placeholder="Optional message...">
+      </label>
+
+      <fieldset>
+        <legend>Select Custom Items:</legend>
+        <label><input type="checkbox" value="Chocolates" data-price="100"> Chocolates (+₹100)</label>
+        <label><input type="checkbox" value="Hotwheels" data-price="150"> Hotwheels (+₹150)</label>
+        <label><input type="checkbox" value="Personalised Bouquet" data-price="200"> Personalised Bouquet (+₹200)</label>
+        <label><input type="checkbox" value="Heart-Shaped Bouquet" data-price="250"> Heart-Shaped Bouquet (+₹250)</label>
+        <label><input type="checkbox" value="Money Bouquet" data-price="300"> Money Bouquet (+₹300)</label>
+        <label><input type="checkbox" value="Ferrero Rocher" data-price="180"> Ferrero Rocher Bouquet (+₹180)</label>
+      </fieldset>
+
+      <p><strong>Total Price: ₹<span id="customPrice">500</span></strong></p>
+      <button type="submit">Add to Cart</button>
+    </form>
+  </section>
+
+  <script src="scripts/custom.js"></script>
+</body>
+</html>

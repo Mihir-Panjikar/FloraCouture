@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloomify | Flower Shop</title>
+  <link rel="stylesheet" href="{% static 'styles/index.css' %}" />
+</head>
+
+<body>
+
+  <header>
+    <h1>🌸 Floral Couture</h1>
+    <nav>
+      <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'custom_bouquets' %}">Custom Bouquets</a></li>
+        <li><a href="{% url 'simple_bouquets' %}">Simple Bouquets</a></li>
+        <li><a href="{% url 'cart' %}">Cart</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Send Love, Send Flowers</h2>
+      <p>Fresh bouquets for every occasion. Customizable, creative, and crafted with care.</p>
+      <a href="#" class="btn">Shop Now</a>
+    </div>
+    <img src="{% static 'assets/Sunflower_Bouquet.jpg' %}" alt="Flowers" class="hero-img" />
+  </section>
+
+  <section class="features">
+    <div class="feature-card">
+      <img src="{% static 'assets/Lily_Bouquet.jpg' %}" alt="Simple Bouquets" />
+      <h3>Simple Bouquets</h3>
+      <p>Elegant pre-designed flower sets for instant gifting.</p>
+    </div>
+    <div class="feature-card">
+      <img src="{% static 'assets/Toy_bouquet.jpg' %}" alt="Custom Bouquets" />
+      <h3>Customized Bouquets</h3>
+      <p>Mix in chocolates, toys, or even cash! Your style, your bouquet.</p>
+    </div>
+  </section>
+
+</body>
+
+</html>

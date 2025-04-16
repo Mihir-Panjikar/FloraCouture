@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Add this near the top if not present
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,10 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'chat',
+    'orders',
     'retailers',
     'products',
     'customers',
-
+    'frontend',
 ]
 
 # Choose one model as the primary auth model
@@ -87,6 +88,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'frontend.middleware.AjaxMiddleware',
+    'frontend.middleware.SameOriginMiddleware',
 ]
 
 ROOT_URLCONF = 'floracouture.urls'
@@ -94,7 +97,10 @@ ROOT_URLCONF = 'floracouture.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, '../Frontend_flawde'),
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -166,13 +172,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    # Include your frontend folder
+    os.path.join(BASE_DIR, '../Frontend_flawde'),  # Adjust this path as needed
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    # Update with correct path or remove if not needed
-]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
