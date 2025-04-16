@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
 
 # Add this near the top if not present
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -51,33 +52,40 @@ INSTALLED_APPS = [
     'frontend',
 ]
 
-# Choose one model as the primary auth model
-AUTH_USER_MODEL = 'retailers.Retailer'
+# Set the custom user model
+AUTH_USER_MODEL = 'customers.Customer'
 
-# Channel Layer Configuration (Using Redis)
+# Channel Layer Configuration (Using In-Memory Layer)
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",  # For development
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
         # For production, use Redis:
-        # "BACKEND": "channels_redis.core.RedisChannelLayer",
-        # "CONFIG": {
-        #     "hosts": [("127.0.0.1", 6379)],
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'CONFIG': {
+        #     "hosts": [('127.0.0.1', 6379)],
         # },
-    },
+    }
 }
 
 # Set the ASGI application
 ASGI_APPLICATION = "floracouture.asgi.application"
 
+# Configure REST Framework
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }
 
+# JWT Settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Change as needed
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Change as needed
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -176,6 +184,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     # Include your frontend folder
     os.path.join(BASE_DIR, '../Frontend_flawde'),  # Adjust this path as needed
+    # Adjust this path as needed
+    os.path.join(BASE_DIR, '../Frontend_flawde/style'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

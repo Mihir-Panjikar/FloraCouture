@@ -1,16 +1,59 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from customers.models import Customer
+from retailers.models import Retailer
 
-Retailer = get_user_model()  # Get the custom Retailer model
+# Customer serializers
+class CustomerRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    
+    class Meta:
+        model = Customer
+        fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name', 'phone_number', 'address']
+        extra_kwargs = {
+            'first_name': {'required': False},
+            'last_name': {'required': False}
+        }
+    
+    def create(self, validated_data):
+        customer = Customer.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', '')
+        )
+        
+        # Add optional fields if provided
+        if 'phone_number' in validated_data:
+            customer.phone_number = validated_data['phone_number']
+        if 'address' in validated_data:
+            customer.address = validated_data['address']
+        
+        # Set password and save
+        customer.set_password(validated_data['password'])
+        customer.save()
+        return customer
 
+# Retailer serializers
 class RetailerRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=6)
-
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    
     class Meta:
         model = Retailer
-        fields = ['username', 'email', 'password', 'business_name', 'phone_number', 'address']
-
+        fields = ['id', 'username', 'email', 'password', 'store_name', 'business_name', 'phone_number', 'address']
+    
     def create(self, validated_data):
-        password = validated_data.pop("password")
-        user = Retailer.objects.create_user(password=password, **validated_data)
-        return user
+        retailer = Retailer.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            store_name=validated_data['store_name'],
+            business_name=validated_data['business_name'],
+            phone_number=validated_data['phone_number'],
+            address=validated_data['address'],
+            is_verified=False  # Retailers start unverified by default
+        )
+        
+        # Set password and save
+        retailer.set_password(validated_data['password'])
+        retailer.save()
+        return retailer

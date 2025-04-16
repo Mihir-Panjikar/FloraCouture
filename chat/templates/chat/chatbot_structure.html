@@ -1,0 +1,33 @@
+<div class="chatbot-container">
+    <div class="chatbot-header">
+        <div class="chatbot-title">
+            <div class="bot-avatar">🌸</div>
+            <h2>{{ chatbot_name }}</h2>
+        </div>
+        <div class="chatbot-controls">
+            <span class="chatbot-status">Online</span>
+            <button class="clear-chat" title="Clear conversation">🗑️</button>
+            <button class="minimize-chat" title="Minimize">▼</button>
+        </div>
+    </div>
+
+    <div class="chatbot-messages" id="chatbot-messages">
+        <!-- Messages will appear here -->
+    </div>
+
+    <div class="chatbot-input">
+        <input type="text" id="user-message" placeholder="Type your question here..." autocomplete="off">
+        <button id="send-button">Send</button>
+    </div>
+</div>
+
+<div class="chatbot-suggestions">
+    <p>Quick Questions:</p>
+    <div class="suggestion-buttons">
+        <button class="suggestion-btn" data-message="Do you have roses available?">Roses</button>
+        <button class="suggestion-btn" data-message="What are your delivery options?">Delivery</button>
+        <button class="suggestion-btn" data-message="How can I create a custom bouquet?">Custom Bouquet</button>
+        <button class="suggestion-btn" data-message="What flowers are in season?">Seasonal Flowers</button>
+        <button class="suggestion-btn" data-message="Track my order">Track Order</button>
+    </div>
+</div>

@@ -1,17 +1,18 @@
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
-from django.contrib.auth import get_user_model
 from .models import Customer
 
 
-class CustomerAPITests(TestCase):
+class CustomerAPITests(APITestCase):
     """Test suite for Customer API endpoints"""
 
     def setUp(self):
         """Set up for the tests."""
-        self.client = APIClient()
+        # Since APITestCase already provides a client, we don't need to set it
+        # self.client = APIClient()  # Remove this line
+        # Added the missing register_url
         self.register_url = reverse('customer-register')
         self.login_url = reverse('customer-login')
         self.profile_url = reverse('customer-profile')

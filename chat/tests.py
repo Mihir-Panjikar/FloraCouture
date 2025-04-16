@@ -6,9 +6,9 @@ from django.conf.urls import url
 import json
 import pytest
 
-from .consumers import ChatConsumer
+from .consumers import ChatbotConsumer
 from .routing import websocket_urlpatterns
-
+from .models import BotResponse
 
 class ChatViewTests(TestCase):
     """Tests for the HTTP views related to chat."""
@@ -20,6 +20,42 @@ class ChatViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'chat/room.html')
         self.assertContains(response, room_name)
+
+
+class ChatbotViewTests(TestCase):
+    """Tests for the HTTP views related to chatbot."""
+
+    def test_chatbot_interface_view(self):
+        """Test that the chatbot interface view returns a successful response."""
+        response = self.client.get(reverse('chat:chatbot'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'chat/chatbot.html')
+
+
+class BotResponseTests(TestCase):
+    """Tests for the BotResponse model."""
+
+    def setUp(self):
+        """Set up test data."""
+        BotResponse.objects.create(
+            category='greeting',
+            keywords='hello,hi',
+            response_text='Hello! How can I help you?',
+            priority=1
+        )
+
+        BotResponse.objects.create(
+            category='product',
+            keywords='flowers,bouquet',
+            response_text='We have many beautiful bouquets!',
+            priority=2
+        )
+
+    def test_bot_response_str(self):
+        """Test the string representation of BotResponse."""
+        response = BotResponse.objects.get(category='greeting')
+        self.assertEqual(
+            str(response), "greeting: Hello! How can I help you?...")
 
 
 @pytest.mark.asyncio
@@ -137,3 +173,61 @@ class ChatConsumerTests(ChannelsLiveServerTestCase):
 
         await communicator1.disconnect()
         await communicator2.disconnect()
+
+
+@pytest.mark.asyncio
+class ChatbotConsumerTests(ChannelsLiveServerTestCase):
+    """Tests for the WebSocket consumer functionality."""
+
+    def setUp(self):
+        """Set up for the WebSocket tests."""
+        self.session_id = "test-session"
+        self.websocket_url = f"/ws/chatbot/{self.session_id}/"
+
+        # Create test responses
+        BotResponse.objects.create(
+            category='greeting',
+            keywords='hello,hi',
+            response_text='Hello! How can I help you?',
+            priority=1
+        )
+
+    async def test_websocket_connection(self):
+        """Test that a WebSocket connection can be established."""
+        communicator = WebsocketCommunicator(
+            ChatbotConsumer.as_asgi(),
+            self.websocket_url
+        )
+        connected, _ = await communicator.connect()
+        self.assertTrue(connected)
+
+        # Check for welcome message
+        response = await communicator.receive_json_from()
+        self.assertIn('message', response)
+        self.assertEqual(response['sender'], 'bot')
+
+        await communicator.disconnect()
+
+    async def test_chatbot_response(self):
+        """Test that the chatbot responds to user messages."""
+        communicator = WebsocketCommunicator(
+            ChatbotConsumer.as_asgi(),
+            self.websocket_url
+        )
+        connected, _ = await communicator.connect()
+        self.assertTrue(connected)
+
+        # Skip welcome message
+        await communicator.receive_json_from()
+
+        # Send a test message
+        await communicator.send_json_to({
+            "message": "Hello there"
+        })
+
+        # Check that we get a response
+        response = await communicator.receive_json_from()
+        self.assertIn('message', response)
+        self.assertEqual(response['sender'], 'bot')
+
+        await communicator.disconnect()

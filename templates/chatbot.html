@@ -1,26 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chatbot - Bloomify</title>
+{% extends "index.html" %}
+{% load static %}
 
-  <!-- Link chatbot stylesheet -->
-  <link rel="stylesheet" href="style/chatbot.css" />
-</head>
-<body>
+{% block title %}{{ page_title }}{% endblock %}
 
-  <!-- Chatbot UI -->
-  <div id="chatbot-box">
-    <div id="chat-header">💬 Chat with Bloomify</div>
-    <div id="chat-log"></div>
-    <div id="chat-input-area">
-      <input type="text" id="chat-input" placeholder="Type a message..." />
-      <button id="send-btn">Send</button>
+{% block content %}
+<div class="chatbot-container">
+  <div class="chatbot-header">
+    <div class="chatbot-title">
+      <div class="bot-avatar">🌸</div>
+      <h2>{{ chatbot_name }}</h2>
     </div>
+    <p class="chatbot-status">Online</p>
   </div>
 
-  <!-- Load chatbot logic -->
-  <script src="scripts/chatbot.js"></script>
-</body>
-</html>
+  <div class="chatbot-messages" id="chatbot-messages">
+    <!-- Messages will appear here -->
+  </div>
+
+  <div class="chatbot-input">
+    <input type="text" id="user-message" placeholder="Type your question here..." autocomplete="off">
+    <button id="send-button">Send</button>
+  </div>
+</div>
+
+<div class="chatbot-suggestions">
+  <p>Quick Questions:</p>
+  <div class="suggestion-buttons">
+    <button class="suggestion-btn" data-message="Do you have roses available?">Roses</button>
+    <button class="suggestion-btn" data-message="What are your delivery options?">Delivery</button>
+    <button class="suggestion-btn" data-message="How can I create a custom bouquet?">Custom Bouquet</button>
+    <button class="suggestion-btn" data-message="Track my order">Track Order</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style/chatbot.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const chatSocket = new WebSocket(
+    'ws://' + window.location.host + '/ws/chatbot/{{ request.session.session_key|default:"guest" }}/'
+  );
+
+  const messageContainer = document.getElementById('chatbot-messages');
+  const userInput = document.getElementById('user-message');
+  const sendButton = document.getElementById('send-button');
+
+  chatSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+
+    // Create message element
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+
+    if (data.sender === 'bot') {
+      messageDiv.classList.add('bot-message');
+      messageDiv.innerHTML = `
+                <div class="message-avatar">🌸</div>
+                <div class="message-content">
+                    <p>${data.message}</p>
+                    <span class="message-time">${formatTime(new Date())}</span>
+                </div>
+            `;
+    } else {
+      messageDiv.classList.add('user-message');
+      messageDiv.innerHTML = `
+                <div class="message-content">
+                    <p>${data.message}</p>
+                    <span class="message-time">${formatTime(new Date())}</span>
+                </div>
+                <div class="message-avatar">👤</div>
+            `;
+    }
+
+    messageContainer.appendChild(messageDiv);
+
+    // Scroll to bottom
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+  };
+
+  chatSocket.onclose = function (e) {
+    console.error('Chat socket closed unexpectedly');
+
+    // Add system message about disconnection
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', 'system-message');
+    messageDiv.innerHTML = `
+            <p>Connection lost. Please refresh the page to reconnect.</p>
+        `;
+    messageContainer.appendChild(messageDiv);
+  };
+
+  // Send message function
+  function sendMessage() {
+    const message = userInput.value.trim();
+    if (message) {
+      // Add user message to UI immediately
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', 'user-message');
+      messageDiv.innerHTML = `
+                <div class="message-content">
+                    <p>${message}</p>
+                    <span class="message-time">${formatTime(new Date())}</span>
+                </div>
+                <div class="message-avatar">👤</div>
+            `;
+      messageContainer.appendChild(messageDiv);
+
+      // Send to WebSocket
+      chatSocket.send(JSON.stringify({
+        'message': message
+      }));
+
+      // Clear input
+      userInput.value = '';
+
+      // Scroll to bottom
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  }
+
+  // Event listeners
+  sendButton.addEventListener('click', sendMessage);
+
+  userInput.addEventListener('keyup', function (e) {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+
+  // Quick suggestion buttons
+  document.querySelectorAll('.suggestion-btn').forEach(button => {
+    button.addEventListener('click', function () {
+      userInput.value = this.getAttribute('data-message');
+      sendMessage();
+    });
+  });
+
+  // Format time helper
+  function formatTime(date) {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+</script>
+{% endblock %}
